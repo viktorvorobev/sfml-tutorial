@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 
-std::vector<Star> createStars(uint32_t count) {
+std::vector<Star> createStars(uint32_t count, float scale) {
   std::vector<Star> stars;
   stars.reserve(count);
 
@@ -15,8 +15,8 @@ std::vector<Star> createStars(uint32_t count) {
 
   // Create randomly distributed stars on the screen
   for (uint32_t i{count}; i--;) {
-    const float x = (dis(gen) - 0.5f) * conf::window_size_f.x;
-    const float y = (dis(gen) - 0.5f) * conf::window_size_f.y;
+    const float x = (dis(gen) - 0.5f) * conf::window_size_f.x * scale;
+    const float y = (dis(gen) - 0.5f) * conf::window_size_f.y * scale;
     const float z = dis(gen) * (conf::far - conf::near) + conf::near;
     stars.push_back({{x, y}, z});
   }
@@ -34,7 +34,7 @@ int main() {
                                  sf::Style::Fullscreen};
   window.setFramerateLimit(conf::max_framerate);
 
-  std::vector<Star> stars = createStars(conf::count);
+  std::vector<Star> stars = createStars(conf::count, conf::far);
 
   uint32_t first = 0;
   while (window.isOpen()) {
