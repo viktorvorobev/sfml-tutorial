@@ -17,8 +17,8 @@ std::vector<Star> createStars(uint32_t count)
     // Create randomly distributed stars on the screen
     for (uint32_t i{count}; i--;)
     {
-        const float x = dis(gen) * conf::window_size_f.x;
-        const float y = dis(gen) * conf::window_size_f.y;
+        const float x = (dis(gen) - 0.5f) * conf::window_size_f.x;
+        const float y = (dis(gen) - 0.5f) * conf::window_size_f.y;
         float const z = dis(gen) * (conf::far - conf::near) + conf::near;
         stars.push_back({{x, y}, z});
     }
@@ -46,7 +46,7 @@ int main()
         for (auto const &s : stars)
         {
             const float scale = 1.0f / s.z;
-            shape.setPosition(s.position * scale);
+            shape.setPosition(s.position * scale + conf::window_size_f * 0.5f);
             shape.setScale(scale, scale);
             window.draw(shape);
         }
