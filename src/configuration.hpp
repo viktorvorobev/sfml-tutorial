@@ -10,4 +10,7 @@ namespace conf
     const uint32_t max_framerate = 144;
     const float dt = 1.0f / static_cast<float>(max_framerate);
 
+    // Star configuration
+    const uint32_t count = 1000;
+    const float radius = 20.0f;
 } // namespace conf
