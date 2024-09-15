@@ -19,8 +19,8 @@ std::vector<Star> createStars(uint32_t count)
     {
         const float x = dis(gen) * conf::window_size_f.x;
         const float y = dis(gen) * conf::window_size_f.y;
-
-        stars.push_back({{x, y}});
+        float const z = dis(gen) * (conf::far - conf::near) + conf::near;
+        stars.push_back({{x, y}, z});
     }
 
     return stars;
@@ -45,7 +45,9 @@ int main()
 
         for (auto const &s : stars)
         {
-            shape.setPosition(s.position);
+            const float scale = 1.0f / s.z;
+            shape.setPosition(s.position * scale);
+            shape.setScale(scale, scale);
             window.draw(shape);
         }
         window.display();
