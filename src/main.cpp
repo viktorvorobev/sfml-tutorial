@@ -67,6 +67,7 @@ int main() {
                                  "CMake SFML Project",
                                  sf::Style::Fullscreen};
   window.setFramerateLimit(conf::max_framerate);
+  window.setMouseCursorVisible(false);
 
   sf::Texture texture;
   texture.loadFromFile("res/star.png");
