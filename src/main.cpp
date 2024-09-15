@@ -21,6 +21,10 @@ std::vector<Star> createStars(uint32_t count) {
     stars.push_back({{x, y}, z});
   }
 
+  // Depth ordering
+  std::sort(stars.begin(), stars.end(),
+            [](const Star &s_1, const Star &s_2) { return s_1.z > s_2.z; });
+
   return stars;
 }
 
