@@ -40,6 +40,28 @@ std::vector<Star> createStars(uint32_t count, float scale) {
   return stars;
 }
 
+void updateGeometry(uint32_t idx, const Star &s, sf::VertexArray &va) {
+  const float scale = 1.0f / s.z;
+  const float depth_ratio = (s.z - conf::near) / (conf::far - conf::near);
+  const float color_ratio = 1.0f - depth_ratio;
+  const auto c = static_cast<uint8_t>(color_ratio * 255.0f);
+
+  const sf::Vector2f p = s.position * scale;
+  const float r = conf::radius * scale;
+  const uint32_t i = 4 * idx;
+
+  va[i + 0].position = {p.x - r, p.y - r};
+  va[i + 1].position = {p.x + r, p.y - r};
+  va[i + 2].position = {p.x + r, p.y + r};
+  va[i + 3].position = {p.x - r, p.y + r};
+
+  const sf::Color color{c, c, c};
+  va[i + 0].color = color;
+  va[i + 1].color = color;
+  va[i + 2].color = color;
+  va[i + 3].color = color;
+}
+
 int main() {
   auto window = sf::RenderWindow{{conf::window_size.x, conf::window_size.y},
                                  "CMake SFML Project",
@@ -47,6 +69,8 @@ int main() {
   window.setFramerateLimit(conf::max_framerate);
 
   std::vector<Star> stars = createStars(conf::count, conf::far);
+
+  sf::VertexArray va{sf::PrimitiveType::Quads, 4 * conf::count};
 
   uint32_t first = 0;
   while (window.isOpen()) {
@@ -74,17 +98,12 @@ int main() {
     for (uint32_t i{0}; i < conf::count; ++i) {
       const uint32_t idx = (i + first) % conf::count;
       const Star &s = stars[idx];
-      const float scale = 1.0f / s.z;
-      shape.setPosition(s.position * scale + conf::window_size_f * 0.5f);
-      shape.setScale(scale, scale);
-
-      const float depth_ratio = (s.z - conf::near) / (conf::far - conf::near);
-      const float color_ratio = 1.0f - depth_ratio;
-      const auto c = static_cast<uint8_t>(color_ratio * 255.0f);
-      shape.setFillColor({c, c, c});
-
-      window.draw(shape);
+      updateGeometry(i, s, va);
     }
+    sf::Transform tf;
+    tf.translate(conf::window_size_f * 0.5f);
+    window.draw(va, tf);
+
     window.display();
   }
 }
