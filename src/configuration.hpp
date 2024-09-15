@@ -14,4 +14,5 @@ const uint32_t count = 1000;
 const float radius = 20.0f;
 const float far = 10.0f;
 const float near = 1.0f;
+const float speed = 1.0f;
 } // namespace conf

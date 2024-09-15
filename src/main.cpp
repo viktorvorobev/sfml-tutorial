@@ -35,6 +35,11 @@ int main() {
   while (window.isOpen()) {
     processEvents(window);
 
+    // Fake travel toward increasing Z
+    for (auto &s : stars) {
+      s.z -= conf::speed * conf::dt;
+    }
+
     // Rendering occurs here
     window.clear();
 
