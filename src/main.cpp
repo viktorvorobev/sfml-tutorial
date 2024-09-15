@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "events.hpp"
+#include "configuration.hpp"
 
 int main()
 {
-    auto window = sf::RenderWindow{{1920u, 1080u}, "CMake SFML Project"};
-    window.setFramerateLimit(144);
+    auto window = sf::RenderWindow{{conf::window_size.x, conf::window_size.y}, "CMake SFML Project"};
+    window.setFramerateLimit(conf::max_framerate);
 
     while (window.isOpen())
     {
