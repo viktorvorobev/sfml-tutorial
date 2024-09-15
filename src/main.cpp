@@ -2,7 +2,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
+    auto window = sf::RenderWindow{{1920u, 1080u}, "CMake SFML Project"};
     window.setFramerateLimit(144);
 
     while (window.isOpen())
@@ -12,6 +12,13 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    window.close();
+                }
             }
         }
 
