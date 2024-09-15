@@ -28,7 +28,7 @@ std::vector<Star> createStars(uint32_t count)
 
 int main()
 {
-    auto window = sf::RenderWindow{{conf::window_size.x, conf::window_size.y}, "CMake SFML Project"};
+    auto window = sf::RenderWindow{{conf::window_size.x, conf::window_size.y}, "CMake SFML Project", sf::Style::Fullscreen};
     window.setFramerateLimit(conf::max_framerate);
 
     std::vector<Star> stars = createStars(conf::count);
