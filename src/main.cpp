@@ -51,6 +51,12 @@ int main() {
         const float scale = 1.0f / s.z;
         shape.setPosition(s.position * scale + conf::window_size_f * 0.5f);
         shape.setScale(scale, scale);
+
+        const float depth_ratio = (s.z - conf::near) / (conf::far - conf::near);
+        const float color_ratio = 1.0f - depth_ratio;
+        const auto c = static_cast<uint8_t>(color_ratio * 255.0f);
+        shape.setFillColor({c, c, c});
+
         window.draw(shape);
       }
     }
