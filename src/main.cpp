@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "events.hpp"
 
 int main()
 {
@@ -7,20 +8,7 @@ int main()
 
     while (window.isOpen())
     {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-            else if (event.type == sf::Event::KeyPressed)
-            {
-                if (event.key.code == sf::Keyboard::Escape)
-                {
-                    window.close();
-                }
-            }
-        }
+        processEvents(window);
 
         window.clear();
         window.display();
