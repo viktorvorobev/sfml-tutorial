@@ -47,10 +47,12 @@ int main() {
     shape.setOrigin(conf::radius, conf::radius);
 
     for (auto const &s : stars) {
-      const float scale = 1.0f / s.z;
-      shape.setPosition(s.position * scale + conf::window_size_f * 0.5f);
-      shape.setScale(scale, scale);
-      window.draw(shape);
+      if (s.z > conf::near) {
+        const float scale = 1.0f / s.z;
+        shape.setPosition(s.position * scale + conf::window_size_f * 0.5f);
+        shape.setScale(scale, scale);
+        window.draw(shape);
+      }
     }
     window.display();
   }
