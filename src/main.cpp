@@ -13,11 +13,23 @@ std::vector<Star> createStars(uint32_t count, float scale) {
   std::mt19937 gen(rd());
   std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
+  // Define star free zone so they don't disappear right in front of the screen
+  const sf::Vector2f window_world_size = conf::window_size_f * conf::near;
+  const sf::FloatRect star_free_zone = {-window_world_size * 0.5f,
+                                        window_world_size};
+
   // Create randomly distributed stars on the screen
   for (uint32_t i{count}; i--;) {
     const float x = (dis(gen) - 0.5f) * conf::window_size_f.x * scale;
     const float y = (dis(gen) - 0.5f) * conf::window_size_f.y * scale;
     const float z = dis(gen) * (conf::far - conf::near) + conf::near;
+
+    // Discard any star that falls in the zone
+    if (star_free_zone.contains(x, y)) {
+      ++i; // Don't decrease the count
+      continue;
+    }
+    // Else add it in the vector
     stars.push_back({{x, y}, z});
   }
 

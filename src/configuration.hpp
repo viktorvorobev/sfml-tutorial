@@ -13,6 +13,6 @@ const float dt = 1.0f / static_cast<float>(max_framerate);
 const uint32_t count = 10000;
 const float radius = 20.0f;
 const float far = 10.0f;
-const float near = 1.0f;
+const float near = 0.1f;
 const float speed = 1.0f;
 } // namespace conf
