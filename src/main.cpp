@@ -68,9 +68,23 @@ int main() {
                                  sf::Style::Fullscreen};
   window.setFramerateLimit(conf::max_framerate);
 
+  sf::Texture texture;
+  texture.loadFromFile("res/star.png");
+  texture.setSmooth(true);
+  texture.generateMipmap();
+
   std::vector<Star> stars = createStars(conf::count, conf::far);
 
   sf::VertexArray va{sf::PrimitiveType::Quads, 4 * conf::count};
+  // Pre fill texture coordinates as they will remain constant
+  const auto texture_size_f = static_cast<sf::Vector2f>(texture.getSize());
+  for (uint32_t idx{conf::count}; idx--;) {
+    const uint32_t i = 4 * idx;
+    va[i + 0].texCoords = {0.0f, 0.0f};
+    va[i + 1].texCoords = {texture_size_f.x, 0.0f};
+    va[i + 2].texCoords = {texture_size_f.x, texture_size_f.y};
+    va[i + 3].texCoords = {0.0f, texture_size_f.y};
+  }
 
   uint32_t first = 0;
   while (window.isOpen()) {
@@ -100,9 +114,10 @@ int main() {
       const Star &s = stars[idx];
       updateGeometry(i, s, va);
     }
-    sf::Transform tf;
-    tf.translate(conf::window_size_f * 0.5f);
-    window.draw(va, tf);
+    sf::RenderStates states;
+    states.transform.translate(conf::window_size_f * 0.5f);
+    states.texture = &texture;
+    window.draw(va, states);
 
     window.display();
   }
